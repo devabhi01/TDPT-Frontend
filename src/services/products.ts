@@ -1,7 +1,8 @@
 import { INITIAL_PRODUCTS } from '../data/products';
 import { Product } from '../types/product';
+import { apiBaseUrl } from './config';
 
-const productsUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/inquiries').replace(/\/inquiries\/?$/, '/products');
+const productsUrl = `${apiBaseUrl}/products`;
 
 export async function getPublishedProducts(): Promise<Product[]> {
   try {

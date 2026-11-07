@@ -4,6 +4,7 @@ import { AdminProductsManager } from './AdminProductsManager';
 import { AdminTalentManager } from './AdminTalentManager';
 import { AdminJobsManager } from './AdminJobsManager';
 import { useTheme } from '../context/ThemeContext';
+import { apiBaseUrl } from '../services/config';
 
 type Inquiry = {
   id: string; name: string; email: string; company: string; phone?: string | null;
@@ -11,8 +12,7 @@ type Inquiry = {
   status?: 'new' | 'pending_review' | 'in_progress' | 'completed' | 'archived';
 };
 type Stats = { total: number; new: number; inProgress: number; completed: number };
-const apiBase = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/inquiries').replace(/\/inquiries\/?$/, '');
-const adminApi = `${apiBase}/admin`;
+const adminApi = `${apiBaseUrl}/admin`;
 const dateLabel = (value: string) => new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
 const statusLabel = (status?: string) => status === 'pending_review' ? 'New' : (status || 'new').replace('_', ' ');
 
@@ -49,7 +49,7 @@ export const AdminPage: React.FC = () => {
 
   useEffect(() => {
     request('/session').then((json) => { setEmail(json.data?.email || ''); setAuthenticated(true); }).catch(() => setAuthenticated(false)).finally(() => setChecking(false));
-    fetch(`${apiBase}/health`).then((response) => response.json()).then((json) => setStorageModeLabel(json.storage === 'mongodb' ? 'MongoDB connected' : 'Local JSON · Atlas not set')).catch(() => setStorageModeLabel('Storage status unavailable'));
+    fetch(`${apiBaseUrl}/health`).then((response) => response.json()).then((json) => setStorageModeLabel(json.storage === 'mongodb' ? 'MongoDB connected' : 'Local JSON · Atlas not set')).catch(() => setStorageModeLabel('Storage status unavailable'));
   }, [request]);
   useEffect(() => {
     if (authenticated && activeSection !== 'products') refresh().catch((error) => setMessage(error.message));
