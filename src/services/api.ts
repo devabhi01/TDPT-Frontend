@@ -1,4 +1,5 @@
 import { ProjectInquiryData } from '../types';
+import { apiInquiriesUrl } from './config';
 
 export interface ApiResponse<T = unknown> {
   success: boolean;
@@ -12,7 +13,7 @@ export interface ApiResponse<T = unknown> {
  * otherwise gracefully simulates the network transaction and persists locally.
  */
 export async function submitProjectInquiry(formData: ProjectInquiryData): Promise<ApiResponse<ProjectInquiryData>> {
-  const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/inquiries';
+  const backendUrl = apiInquiriesUrl;
 
   try {
     const controller = new AbortController();

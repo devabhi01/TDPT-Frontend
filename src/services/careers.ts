@@ -1,3 +1,5 @@
+import { apiBaseUrl } from './config';
+
 export interface CareerApplication {
   name: string;
   email: string;
@@ -12,8 +14,8 @@ export interface CareerApplication {
   resumeName?: string;
 }
 
-const applicationsUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/inquiries').replace(/\/inquiries\/?$/, '/careers/applications');
-const apiBase = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/inquiries').replace(/\/inquiries\/?$/, '');
+const applicationsUrl = `${apiBaseUrl}/careers/applications`;
+const apiBase = apiBaseUrl;
 export interface JobListing {
   id: string; title: string; department: string; employmentType: string; location: string;
   summary: string; responsibilities: string[]; qualifications: string[]; status: 'open' | 'draft'; createdAt: string;
@@ -47,3 +49,4 @@ export async function downloadApplicationResume(id: string): Promise<void> {
   const link = document.createElement('a'); link.href = blobUrl; link.download = 'applicant-resume.pdf'; link.click();
   URL.revokeObjectURL(blobUrl);
 }
+
